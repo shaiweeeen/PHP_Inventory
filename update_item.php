@@ -26,7 +26,11 @@
                         $description = $rec[1];
                         $umsr = $rec[2];
                         $category = $rec[3];
-                        $qty = $rec[4];
+						if(fmod($rec[4],1) === 0.00){
+							$qty = floor($rec[4]);
+						}else{
+							$qty = $rec[4];
+						}
                         $price = $rec[5];
                     }  
                 }else{

@@ -62,7 +62,7 @@
 		}
 
 		if((array_search($umsr,$nonDecimalUmsr)) !== FALSE){
-			if ((strpos($qty,'.') !== false)){
+			if ((fmod($qty,1) !== 0.00)){
 				echo "<p> Quantity on hand can only be decimal for Kilo</p>";
 				$isError = true;
 			}	

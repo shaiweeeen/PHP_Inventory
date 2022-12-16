@@ -20,9 +20,15 @@
 		//check if the connection was successful
 		if($connection)	
 			{
-				$sql = " select *
+				$sql = " select 
+							item.iid,
+							item.description,
+							item.umsr,
+							category.description,
+							item.qtyonhand,
+							item.price
 						 from
-							item inner join category
+							item left join category
 								on item.cid = category.cid
 						 order by
 							item.description
@@ -39,6 +45,7 @@
 					echo "		<th>Category</th>";
 					echo "		<th>Qty. on Hand</th>";
 					echo "		<th>Price</th>";
+					echo "		<th colspan ='2'>Action</th>";
 					echo "	</tr>";
 					
 					$seq = 1;
@@ -50,8 +57,18 @@
 						echo "		<td>".$rec[0]."</td>";
 						echo "		<td>".$rec[1]."</td>";
 						echo "		<td>".$rec[2]."</td>";
-						echo "		<td>".$rec[7]."</td>";
-						echo "		<td align='right'>".$rec[4]."</td>";
+							if($rec[3] === null){
+								echo "		<td>Category Deleted</td>";		
+							}else{
+								echo "		<td>".$rec[3]."</td>";
+							}
+						
+							if(fmod($rec[4],1) === 0.00){
+								echo "		<td align='right'>".floor($rec[4])."</td>";
+							}else{
+								echo "		<td align='right'>".$rec[4]."</td>";
+							}
+						
 						echo "		<td align='right'>".$rec[5]."</td>";
 						echo "		<td><a href='list_all.php?deleteId= ".$rec[0]."'>&#128465; Delete</a></td>";
 						echo "		<td><a href='./update_item.php?updateId=".$rec[0]."'>&#128393; Update</a></td>";
@@ -108,14 +125,21 @@
 			if($connection)	
 			{
 				//get all the records from the student table
-				$records = mysqli_query($connection, " select *
-				from
-				   item inner join category
-					   on item.cid = category.cid
-				where 
-					item.description like '%".$keyword."%' or price like '%".$keyword."%' 
-				order by 
-					item.description");					
+				$records = mysqli_query($connection, 
+					" select
+							item.iid,
+							item.description,
+							item.umsr,
+							category.description,
+							item.qtyonhand,
+							item.price
+						from
+							item left join category
+								on item.cid = category.cid
+							where 
+								item.description like '%".$keyword."%' or price like '%".$keyword."%' 
+							order by 
+								item.description");					
 				
 				//check if there are records retrieved
 				
@@ -130,6 +154,7 @@
 					echo "		<th>Category</th>";
 					echo "		<th>Qty. on Hand</th>";
 					echo "		<th>Price</th>";
+					echo "		<th colspan ='2'>Action</th>";
 					echo "	</tr>";
 					
 					$seq = 1;
@@ -141,8 +166,17 @@
 						echo "		<td>".$rec[0]."</td>";
 						echo "		<td>".$rec[1]."</td>";
 						echo "		<td>".$rec[2]."</td>";
-						echo "		<td>".$rec[7]."</td>";
-						echo "		<td align='right'>".$rec[4]."</td>";
+						if($rec[3] === null){
+							echo "		<td>Category Deleted</td>";		
+						}else{
+							echo "		<td>".$rec[3]."</td>";
+						}
+					
+						if(fmod($rec[4],1) === 0.00){
+							echo "		<td align='right'>".floor($rec[4])."</td>";
+						}else{
+							echo "		<td align='right'>".$rec[4]."</td>";
+						}
 						echo "		<td align='right'>".$rec[5]."</td>";
 						echo "		<td><a href='list_all.php?deleteId= ".$rec[0]."'>&#128465; Delete</a></td>";
 						echo "		<td><a href='./update_item.php?updateId=".$rec[0]."'>&#128393; Update</a></td>";
