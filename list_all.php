@@ -1,3 +1,11 @@
+<?php
+	session_start();
+
+	if(!isset($_SESSION["username"])){
+		header("location: login.php");
+		exit;
+	}
+?>
 <html>
 	<head>
 		<title>List All Items</title>
@@ -5,6 +13,7 @@
 	<body>
 		
 		<?php
+
 		
 		function listAll(){
 
